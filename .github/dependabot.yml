@@ -4,6 +4,9 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    # app.css loads two slices of this font by number; a new version may renumber them silently.
+    ignore:
+      - dependency-name: "@fontsource/zen-kaku-gothic-new"
     groups:
       npm:
         patterns: ["*"]

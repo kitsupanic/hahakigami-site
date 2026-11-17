@@ -465,18 +465,6 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
     gap: 40px;
     align-items: start;
   }
-  .panel {
-    border: 4px solid var(--rule);
-    padding: 18px 22px;
-    background: var(--panel);
-  }
-  .panel h3 {
-    font-size: 30px;
-    font-weight: 900;
-    font-stretch: 120%;
-    padding-bottom: 6px;
-    border-bottom: 10px solid var(--rule);
-  }
   .reqs dl {
     display: grid;
     grid-template-columns: auto 1fr;
