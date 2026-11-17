@@ -2,6 +2,7 @@ version: 2
 updates:
   - package-ecosystem: npm
     directory: /
+    open-pull-requests-limit: 0 # paused; remove to resume
     schedule:
       interval: weekly
     # app.css loads two slices of this font by number; a new version may renumber them silently.
@@ -12,6 +13,7 @@ updates:
         patterns: ["*"]
   - package-ecosystem: github-actions
     directory: /
+    open-pull-requests-limit: 0 # paused; remove to resume
     schedule:
       interval: weekly
     groups:
