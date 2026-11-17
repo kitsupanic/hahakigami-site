@@ -14,9 +14,17 @@
 
   onMount(() => {
     // A thin band across the middle of the viewport decides the current section; the hero maps to Steps.
+    // The last section never reaches that band, so the bottom of the page selects it instead.
+    let mid = 'steps';
+    const last = links[links.length - 1][0];
+    const update = () => {
+      const atEnd = innerHeight + scrollY >= document.documentElement.scrollHeight - 2;
+      active = atEnd ? last : mid;
+    };
     const io = new IntersectionObserver(
       (entries) => {
-        for (const e of entries) if (e.isIntersecting) active = e.target.id === 'top' ? 'steps' : e.target.id;
+        for (const e of entries) if (e.isIntersecting) mid = e.target.id === 'top' ? 'steps' : e.target.id;
+        update();
       },
       { rootMargin: '-45% 0px -54% 0px' }
     );
@@ -24,7 +32,11 @@
       const el = document.getElementById(id);
       if (el) io.observe(el);
     }
-    return () => io.disconnect();
+    addEventListener('scroll', update, { passive: true });
+    return () => {
+      io.disconnect();
+      removeEventListener('scroll', update);
+    };
   });
 </script>
 

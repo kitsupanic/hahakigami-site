@@ -14,7 +14,8 @@ pnpm preview
 
 `src/lib/config.ts`:
 
-- `DOWNLOAD_URL`: the latest GitHub release; `null` renders the dashed "coming soon" Download button instead.
+- `DOWNLOAD_URL`: the latest GitHub release.
+- `VERSION`: shown on the box top and in the footer; bump it with each app release.
 - `SITE_URL`: `https://hahakigami.com`, so the Open Graph image URL is absolute.
 
 ## Deploy to Cloudflare Workers
