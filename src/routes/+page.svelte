@@ -1,9 +1,9 @@
 <script lang="ts">
-  import DownloadButton from '$lib/DownloadButton.svelte';
-  import Spine from '$lib/Spine.svelte';
-  import SpecSheet from '$lib/SpecSheet.svelte';
-  import Treemap from '$lib/Treemap.svelte';
-  import { GITHUB_URL, SITE_URL } from '$lib/config';
+  import DownloadButton from '#lib/DownloadButton.svelte';
+  import Spine from '#lib/Spine.svelte';
+  import SpecSheet from '#lib/SpecSheet.svelte';
+  import Treemap from '#lib/Treemap.svelte';
+  import { GITHUB_URL, SITE_URL } from '#lib/config.ts';
 
   const title = 'Hahakigami — disk space analyzer for macOS';
   const description =
