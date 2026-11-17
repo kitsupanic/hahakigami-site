@@ -150,9 +150,12 @@
   }
 
   /* The one motion moment: bars grow with an exponential ease-out once the panel is on screen. */
-  .armed .track i {
-    width: 0;
-    border-width: 0;
+  /* Screen only, so print and full-page captures never show empty bars. */
+  @media screen {
+    .armed .track i {
+      width: 0;
+      border-width: 0;
+    }
   }
   .armed.shown .track i {
     width: var(--w);

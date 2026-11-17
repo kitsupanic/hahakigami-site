@@ -3,7 +3,7 @@
   import Spine from '#lib/Spine.svelte';
   import SpecSheet from '#lib/SpecSheet.svelte';
   import Treemap from '#lib/Treemap.svelte';
-  import { GITHUB_URL, SITE_URL } from '#lib/config.ts';
+  import { GITHUB_URL, SITE_URL, VERSION } from '#lib/config.ts';
 
   const title = 'Hahakigami — disk space analyzer for macOS';
   const description =
@@ -43,7 +43,7 @@
             class="art"
             src="/guardian-720.webp"
             srcset="/guardian-720.webp 720w, /guardian-1440.webp 1440w"
-            sizes="(max-width: 860px) 100vw, 600px"
+            sizes="(max-width: 860px) min(72vw, 420px), min(54vw, 720px)"
             width="720"
             height="720"
             fetchpriority="high"
@@ -66,7 +66,7 @@
             <a class="gh" href={GITHUB_URL}>View on GitHub</a>
           </div>
         </div>
-        <div class="top"><span>Disk space analyzer · macOS</span><span class="ver">v0.1</span></div>
+        <div class="top"><span>Disk space analyzer · macOS</span><span class="ver">{VERSION}</span></div>
       </header>
 
       <div class="back">
@@ -191,7 +191,7 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
     <footer class="endflap carton">
       <div>
         <p class="fname">Hahakigami</p>
-        <p class="fine">© 2026 Hahakigami contributors · MIT · v0.1 performance prototype</p>
+        <p class="fine">© 2026 Hahakigami contributors · MIT · {VERSION} performance prototype</p>
         <p class="fine"><a href={GITHUB_URL}>GitHub</a></p>
       </div>
       <div class="barcode" aria-hidden="true">
