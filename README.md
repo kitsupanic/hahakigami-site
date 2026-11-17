@@ -24,4 +24,4 @@ Served at `https://hahakigami.com` as static assets; `wrangler.jsonc` holds the 
 - From Cloudflare (Workers Builds, connected to this repository): build command `pnpm build`, deploy command `npx wrangler deploy`.
 - By hand: `pnpm build && pnpm dlx wrangler deploy`.
 
-`hahakigami.app` redirects here through the small Worker in `redirect/`. It is deployed by hand: `cd redirect && pnpm dlx wrangler deploy`.
+`hahakigami.app`, `www.hahakigami.app` and `www.hahakigami.com` redirect here through the small Worker in `redirect/`. It is deployed by hand: `cd redirect && pnpm dlx wrangler deploy`.
