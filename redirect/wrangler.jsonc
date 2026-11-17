@@ -1,0 +1,8 @@
+{
+  // Separate Worker so the main site stays static-only. Deploy by hand: pnpm dlx wrangler deploy (in this folder).
+  "name": "hahakigami-app-redirect",
+  "main": "worker.js",
+  "compatibility_date": "2026-11-01",
+  "workers_dev": false,
+  "routes": [{ "pattern": "hahakigami.app", "custom_domain": true }]
+}
