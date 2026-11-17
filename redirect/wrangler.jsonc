@@ -4,5 +4,9 @@
   "main": "worker.js",
   "compatibility_date": "2026-11-01",
   "workers_dev": false,
-  "routes": [{ "pattern": "hahakigami.app", "custom_domain": true }]
+  "routes": [
+    { "pattern": "hahakigami.app", "custom_domain": true },
+    { "pattern": "www.hahakigami.app", "custom_domain": true },
+    { "pattern": "www.hahakigami.com", "custom_domain": true }
+  ]
 }

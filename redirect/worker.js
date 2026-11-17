@@ -1,4 +1,4 @@
-// Sends every request on hahakigami.app to the same path on hahakigami.com.
+// Sends every request on hahakigami.app and the www hosts to the same path on hahakigami.com.
 export default {
   fetch(request) {
     const url = new URL(request.url);
