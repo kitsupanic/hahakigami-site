@@ -1,0 +1,88 @@
+@import './lib/tokens.css';
+
+/* Zen Kaku Gothic New 900, only the two slices that hold 箒 (U+7B92) and 神 (U+795E): one face, two files. */
+@font-face {
+  font-family: 'Zen Kaku Gothic New';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 900;
+  src: url('../node_modules/@fontsource/zen-kaku-gothic-new/files/zen-kaku-gothic-new-25-900-normal.woff2') format('woff2');
+  unicode-range: U+7B92;
+}
+@font-face {
+  font-family: 'Zen Kaku Gothic New';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 900;
+  src: url('../node_modules/@fontsource/zen-kaku-gothic-new/files/zen-kaku-gothic-new-113-900-normal.woff2') format('woff2');
+  unicode-range: U+795E;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  color-scheme: light;
+  background: var(--table);
+  scrollbar-color: var(--muted) var(--table);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+body {
+  background: var(--table);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 0.08em;
+}
+
+::selection {
+  background: var(--sel-bg);
+  color: var(--sel-fg);
+}
+
+:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.skip {
+  position: absolute;
+  left: 8px;
+  top: -80px;
+  z-index: 10;
+  padding: 10px 14px;
+  background: var(--straw);
+  color: var(--carton);
+  font-weight: 800;
+}
+.skip:focus {
+  top: 8px;
+  outline-color: var(--carton);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -1,0 +1,34 @@
+/* All colours and fonts live here. */
+:root {
+  --carton: #0e1319; /* the Guardian art's own background */
+  --straw: #e9d9b4;
+  --straw-dim: #8f8670; /* secondary strokes and code comments on carton */
+  --cord: #c42a20; /* actionable things + the box's spot-colour band */
+  --on-red: #f6efdf;
+  --paper: #f2ede1;
+  --panel: #ffffff;
+  --ink: #16140f;
+  --ink-soft: #3b372d;
+  --muted: #5a5446;
+  --table: #cfc9bc; /* the surface the box stands on */
+  --rule: var(--ink);
+
+  --font-sans: 'Archivo Variable', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SF Mono', Menlo, monospace;
+  --font-jp: 'Zen Kaku Gothic New', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans CJK JP', sans-serif;
+
+  /* Surface-dependent: overridden by .carton */
+  --focus: var(--ink);
+  --sel-bg: var(--cord);
+  --sel-fg: var(--on-red);
+}
+
+.carton {
+  background: var(--carton);
+  color: var(--straw);
+  color-scheme: dark;
+  scrollbar-color: var(--straw-dim) var(--carton);
+  --focus: var(--straw);
+  --sel-bg: var(--straw);
+  --sel-fg: var(--carton);
+}
