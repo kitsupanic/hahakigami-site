@@ -2,6 +2,8 @@
   import { onMount } from 'svelte';
 
   const AXIS_MAX = 25; // seconds, shared by every bar
+  // Five equal steps; the track's gridlines (every 20%) line up with these labels.
+  const TICKS = [0, 1, 2, 3, 4, 5].map((i) => (AXIS_MAX / 5) * i);
   const groups = [
     { name: 'GitHub project folder', rows: [{ tool: 'Hahakigami', s: 3.14 }, { tool: 'OpenDisk', s: 4.572 }] },
     { name: 'Home folder', rows: [{ tool: 'Hahakigami', s: 13.126 }, { tool: 'OpenDisk', s: 18.793 }] },
@@ -49,7 +51,7 @@
   {/each}
   <div class="axis" aria-hidden="true">
     <span></span>
-    <div><span>0</span><span>5</span><span>10</span><span>15</span><span>20</span><span>25 s</span></div>
+    <div>{#each TICKS as t, i (t)}<span>{t}{i === TICKS.length - 1 ? ' s' : ''}</span>{/each}</div>
     <span></span>
   </div>
   <p class="legend">
@@ -62,18 +64,6 @@
 </div>
 
 <style>
-  .panel {
-    border: 4px solid var(--rule);
-    padding: 18px 22px;
-    background: var(--panel);
-  }
-  h3 {
-    font-size: 30px;
-    font-weight: 900;
-    font-stretch: 120%;
-    padding-bottom: 6px;
-    border-bottom: 10px solid var(--rule);
-  }
   h4 {
     margin: 22px 0 2px;
     font-size: 12px;

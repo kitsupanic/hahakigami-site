@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/routes/+page.svelte"
+        ],
+        "createdAt": "2026-11-17T22:24:35.389Z",
+        "reason": "Claude judged: .steps li + li and .priv div + div are 3px ink dividers between grid cells, same colour as the grid's outer border, not coloured accent tabs"
+      }
+    ]
+  }
+}
