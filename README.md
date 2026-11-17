@@ -17,10 +17,9 @@ pnpm preview
 - `DOWNLOAD_URL`: the latest GitHub release; `null` renders the dashed "coming soon" Download button instead.
 - `SITE_URL`: `https://hahakigami.com`, so the Open Graph image URL is absolute.
 
-## Deploy to Cloudflare Pages
+## Deploy to Cloudflare Workers
 
-Served at `https://hahakigami.com`; `hahakigami.app` redirects there.
+Served at `https://hahakigami.com` as static assets; `wrangler.jsonc` holds the Worker name, the `build` folder and the custom domain.
 
-- Root directory: repository root
-- Build command: `pnpm build`
-- Build output directory: `build`
+- From Cloudflare (Workers Builds, connected to this repository): build command `pnpm build`, deploy command `npx wrangler deploy`.
+- By hand: `pnpm build && pnpm dlx wrangler deploy`.
