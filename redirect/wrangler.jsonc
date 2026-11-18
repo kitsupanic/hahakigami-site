@@ -1,5 +1,5 @@
 {
-  // Separate Worker so the main site stays static-only. Deploy by hand: pnpm dlx wrangler deploy (in this folder).
+  // Separate Worker so the main site stays static-only. Deploy by hand from the repo root: pnpm exec wrangler deploy --config redirect/wrangler.jsonc
   "name": "hahakigami-app-redirect",
   "main": "worker.js",
   "compatibility_date": "2026-11-01",

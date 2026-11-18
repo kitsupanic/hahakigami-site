@@ -7,7 +7,8 @@ export default defineConfig({
   plugins: [
     sveltekit({
       preprocess: vitePreprocess(),
-      adapter: adapter()
+      // 404.html is served for unknown paths (see not_found_handling in wrangler.jsonc).
+      adapter: adapter({ fallback: '404.html' })
     })
   ]
 });
