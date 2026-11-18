@@ -63,7 +63,7 @@
           </ul>
           <div class="cta">
             <DownloadButton />
-            <a class="gh" href={GITHUB_URL}>View on GitHub</a>
+            <a class="btn gh" href={GITHUB_URL}>View on GitHub</a>
           </div>
         </div>
         <div class="top"><span>Disk space analyzer · macOS</span><span class="ver">{VERSION}</span></div>
@@ -204,10 +204,12 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
 
 <style>
   .box {
-    max-width: 1320px;
+    --spine: 96px;
+    --box: 1320px;
+    max-width: var(--box);
     margin: 0 auto;
     display: grid;
-    grid-template-columns: 96px minmax(0, 1fr);
+    grid-template-columns: var(--spine) minmax(0, 1fr);
   }
 
   /* Front panel */
@@ -251,7 +253,7 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
   }
   /* The text column stops where the Guardian's artwork starts (art left edge + ~5% of its width, minus a gap). */
   .pitch {
-    max-width: calc(min(100vw - 96px, 1224px) + 30px - 0.95 * var(--art));
+    max-width: calc(min(100vw, var(--box)) - var(--spine) + 30px - 0.95 * var(--art));
   }
   h1 {
     font-size: clamp(34px, 4vw, 56px);
@@ -343,15 +345,7 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
     gap: 12px;
   }
   .gh {
-    display: inline-flex;
-    align-items: center;
-    padding: 16px 22px;
     border: 2px solid var(--straw);
-    font-weight: 800;
-    font-size: 17px;
-    line-height: 1;
-    letter-spacing: 0.02em;
-    text-decoration: none;
   }
   .gh:hover {
     background: var(--straw);
