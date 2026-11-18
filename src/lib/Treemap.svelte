@@ -40,7 +40,7 @@
     {/each}
   </div>
 </div>
-<p class="note">Example data. Real screenshots go here.</p>
+<p class="note">Example data.</p>
 <p class="note">Logical size counts every APFS clone copy in full; on disk counts shared blocks once.</p>
 
 <style>
@@ -122,7 +122,7 @@
   .b0 {
     grid-column: 1;
     grid-row: 1 / -1;
-    background: #e9d9b4;
+    background: var(--straw);
   }
   .b1 {
     background: #cdb98f;
