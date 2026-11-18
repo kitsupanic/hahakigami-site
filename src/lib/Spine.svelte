@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { replaceState } from '$app/navigation';
 
   const links = [
     ['steps', 'Steps'],
@@ -11,6 +12,17 @@
 
   // The first viewport (hero) counts as Steps, so one tab is always current.
   let active = $state<string>('steps');
+
+  // Glide to the target ourselves: the router's hash navigation jumps.
+  function go(e: MouseEvent, id: string) {
+    const el = document.getElementById(id);
+    if (!el || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    e.preventDefault();
+    const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (id === 'top') scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' });
+    else el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto' });
+    replaceState(id === 'top' ? location.pathname : `#${id}`, {});
+  }
 
   onMount(() => {
     // A thin band across the middle of the viewport decides the current section; the hero maps to Steps.
@@ -44,10 +56,10 @@
   <img class="mark" src="/favicon.png" alt="" width="56" height="56" />
   <nav aria-label="Sections">
     {#each links as [id, label] (id)}
-      <a href="#{id}" aria-current={active === id ? 'true' : undefined}>{label}</a>
+      <a href="#{id}" onclick={(e) => go(e, id)} aria-current={active === id ? 'true' : undefined}>{label}</a>
     {/each}
   </nav>
-  <span class="name">Hahakigami</span>
+  <a class="name" href="#top" onclick={(e) => go(e, 'top')} aria-label="Hahakigami, back to top">Hahakigami</a>
 </aside>
 
 <style>
@@ -103,6 +115,11 @@
     font-stretch: 125%;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+    text-decoration: none;
+  }
+  .name:hover {
+    text-decoration: underline 3px var(--cord);
+    text-underline-offset: 6px;
   }
 
   /* Very short windows: the name is already on the red band, so drop it from the spine. */

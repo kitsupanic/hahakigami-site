@@ -1,4 +1,4 @@
-/* All shared colours and fonts live here; Treemap.svelte keeps its own block shades. */
+/* All shared colours and fonts live here. */
 :root {
   --carton: #0e1319; /* the Guardian art's own background */
   --straw: #e9d9b4;

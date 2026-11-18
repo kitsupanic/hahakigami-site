@@ -1,8 +1,8 @@
 <script lang="ts">
   import DownloadButton from '#lib/DownloadButton.svelte';
+  import Features from '#lib/Features.svelte';
   import Spine from '#lib/Spine.svelte';
   import SpecSheet from '#lib/SpecSheet.svelte';
-  import Treemap from '#lib/Treemap.svelte';
   import { GITHUB_URL, SITE_URL, VERSION } from '#lib/config.ts';
 
   const title = 'Hahakigami — disk space analyzer for macOS';
@@ -51,8 +51,14 @@
           />
         </div>
         <div class="band">
+          <svg width="0" height="0" aria-hidden="true" style="position:absolute">
+            <filter id="ink-edge" x="-5%" y="-30%" width="110%" height="160%">
+              <feTurbulence type="fractalNoise" baseFrequency="0.035 0.6" numOctaves="3" seed="7" />
+              <feDisplacementMap in="SourceGraphic" scale="26" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+          </svg>
           <div class="band-in" aria-hidden="true">
-            <span class="wordmark">HAHAKIGAMI</span><span class="jp" lang="ja">箒神</span>
+            <span class="wordmark">{#each [...'HAHAKIGAMI'] as ch, i (i)}<span style:--i={i}>{ch}</span>{/each}</span><span class="jp" lang="ja">箒神</span>
           </div>
         </div>
         <div class="foot">
@@ -86,7 +92,7 @@
             <li>
               <span class="num" aria-hidden="true">3</span>
               <h3>Explore</h3>
-              <p>Tree, treemap or sunburst. On disk or logical size. Search every name.</p>
+              <p>Tree, treemap or sunburst. Search every name.</p>
             </li>
             <li>
               <span class="num" aria-hidden="true">4</span>
@@ -98,27 +104,7 @@
 
         <section id="inside">
           <div class="flap"><h2>What’s inside</h2><span>Features</span></div>
-          <div class="screen">
-            <div><Treemap /></div>
-            <ul class="feat">
-              <li>
-                <h3>Honest sizes</h3>
-                <p>Clones of the same APFS blocks are counted once. On disk and logical sizes stay separate.</p>
-              </li>
-              <li>
-                <h3>Three views</h3>
-                <p>Size-sorted tree, treemap and sunburst, with breadcrumbs and back/forward.</p>
-              </li>
-              <li>
-                <h3>Saved scans</h3>
-                <p>Keep a scan and browse it later without rescanning.</p>
-              </li>
-              <li>
-                <h3>Quick Look &amp; Finder</h3>
-                <p>Inspect any file, copy its path, reveal it in Finder.</p>
-              </li>
-            </ul>
-          </div>
+          <Features />
         </section>
 
         <section id="bench">
@@ -292,10 +278,12 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
   .band {
     grid-area: band;
     container-type: inline-size;
+    overflow: hidden;
     background: var(--cord);
     color: var(--on-red);
   }
   .band-in {
+    position: relative;
     --w: calc(100cqw - 2 * var(--pad));
     display: flex;
     align-items: center;
@@ -314,6 +302,56 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
     font-family: var(--font-jp);
     font-weight: 900;
     font-size: calc(var(--w) * 0.05);
+  }
+
+  /* Press run, once on load: a roller lays the spot red left to right with a ragged ink edge,
+     then the knocked-out wordmark comes into register. Without motion the band is simply printed. */
+  @media (prefers-reduced-motion: no-preference) {
+    .band {
+      background: transparent;
+    }
+    /* Taller than the band so the displaced top and bottom edges stay clipped; only the leading edge shows. */
+    .band::before {
+      content: '';
+      position: absolute;
+      inset: -16px 0;
+      /* The paint is a background that grows, so the filter roughens its moving edge (a clip would cut it straight). */
+      background: linear-gradient(var(--cord), var(--cord)) no-repeat 0 0 / 0% 100%;
+      filter: url(#ink-edge);
+      animation: roll 1050ms cubic-bezier(0.65, 0, 0.2, 1) 250ms both;
+    }
+    /* Each letter is stamped as the roller clears it, then drifts from a misprint into register. */
+    .wordmark > span,
+    .jp {
+      display: inline-block;
+      animation: register 1100ms cubic-bezier(0.16, 1, 0.3, 1) calc(700ms + var(--i) * 70ms) both;
+    }
+    .jp {
+      --i: 11;
+    }
+  }
+  @keyframes roll {
+    99% {
+      filter: url(#ink-edge);
+    }
+    to {
+      background-size: 110% 100%;
+      filter: none;
+    }
+  }
+  @keyframes register {
+    from {
+      opacity: 0;
+      translate: 0.08em -0.05em;
+      text-shadow: -0.07em 0.04em 0 var(--carton);
+    }
+    30% {
+      opacity: 1;
+    }
+    to {
+      translate: 0 0;
+      text-shadow: 0 0 0 transparent;
+    }
   }
 
   .foot {
@@ -416,41 +454,6 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
     font-size: 15px;
     line-height: 1.45;
     color: var(--ink-soft);
-  }
-
-  .screen {
-    display: grid;
-    grid-template-columns: 1.6fr 1fr;
-    gap: 32px;
-    align-items: start;
-  }
-  .feat {
-    list-style: none;
-    border-top: 3px solid var(--rule);
-  }
-  .feat li {
-    position: relative;
-    padding: 16px 0 16px 24px;
-    border-bottom: 1px solid color-mix(in srgb, var(--ink) 33%, transparent);
-  }
-  .feat li::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 23px;
-    width: 10px;
-    height: 10px;
-    background: var(--ink);
-  }
-  .feat h3 {
-    font-size: 18px;
-    font-weight: 800;
-  }
-  .feat p {
-    margin-top: 4px;
-    font-size: 16px;
-    line-height: 1.45;
-    max-width: 60ch;
   }
 
   .spec {
@@ -610,7 +613,6 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
       border-left: 0;
       border-top: 3px solid var(--rule);
     }
-    .screen,
     .spec,
     .cli {
       grid-template-columns: minmax(0, 1fr);

@@ -124,10 +124,6 @@ components:
     textColor: "{colors.ink}"
     rounded: "{rounded.print}"
     padding: "18px 22px"
-  segmented-toggle-on:
-    backgroundColor: "{colors.straw}"
-    textColor: "{colors.carton}"
-    padding: "7px 12px"
   screen-window:
     backgroundColor: "{colors.carton}"
     textColor: "{colors.straw}"
@@ -145,15 +141,15 @@ components:
 
 The site is a software box, printed flat. Each part of the page is a part of the box. The sticky left spine is the box's spine. The first viewport is the box front: near-black carton, the Guardian art bleeding off the right edge, and a full-width spot-colour band with the wordmark. Everything after that is the back panel, an off-white card of ruled boxes, thick keylines and a spec sheet. The footer is the bottom flap, with a barcode. The whole box sits on a warm grey table that shows either side of the page at wide viewports.
 
-It is dense and printed, never glossy. Depth comes from ink and rules, not light. The display face is very heavy and set at expanded widths, so it reads like box packaging. Figures, dates and code are set in mono, like the small print on a spec label. Dashed versus solid is a real code: solid means on disk, Hahakigami, available; dashed means logical size, a competitor, or not available yet.
+It is dense and printed, never glossy. Depth comes from ink and rules, not light. The display face is very heavy and set at expanded widths, so it reads like box packaging. Figures, dates and code are set in mono, like the small print on a spec label. Dashed versus solid is a real code: solid means Hahakigami, available; dashed means a competitor, or not available yet.
 
 **Key Characteristics:**
 - Two surfaces only: the dark carton (box front, spine, terminal, app window, bottom flap) and the off-white paper back panel, set on the table colour.
 - One spot colour, cord red, used for actions, the current nav tab and the wordmark band.
 - Square ruled boxes with 2–4px keylines. The only rounded corners belong to things that depict a Mac screen.
 - Expanded heavy Archivo for display, JetBrains Mono for figures and labels.
-- Solid means real or present. Dashed means logical, competitor or not yet available.
-- One motion moment (bars growing on the spec sheet) plus the treemap re-flowing when you switch its size basis.
+- Solid means real or present. Dashed means competitor or not yet available.
+- Three motion moments: the press run on the wordmark band at load, and the spec-sheet bars growing. Spine links glide to their section.
 
 ## Colors
 
@@ -164,7 +160,7 @@ A printed two-surface palette: dark carton and off-white paper, straw for type o
 
 ### Neutral
 - **Carton** (carton): the Guardian art's own background. It is the box front, spine, bottom flap, terminal block and app-window frame. Any element carrying the `carton` surface class switches its focus ring and selection colours to straw.
-- **Straw** (straw): the bristles. Text and keylines on carton, the hover fill for outline buttons and spine tabs, the pressed segment of the treemap toggle, the barcode bars, and the second line of the headline.
+- **Straw** (straw): the bristles. Text and keylines on carton, the hover fill for outline buttons and spine tabs, the barcode bars, and the second line of the headline.
 - **Dim Straw** (straw-dim): secondary strokes on carton: the top-edge rule, code comments and scrollbar thumbs.
 - **On-Red Cream** (on-red): text on cord red. It is also the colour of the headline's first line on carton.
 - **Paper** (paper): the back-panel card behind every section after the hero.
@@ -199,7 +195,7 @@ A printed two-surface palette: dark carton and off-white paper, straw for type o
 - **Body** (400, 15–17px, 1.45–1.55 line height, max 50–65ch): back-panel copy.
 - **Label** (700–800, 13–14px, 0.14–0.18em tracking, uppercase): spine tabs, the box's top-edge strip, spec-sheet group names.
 - **Mono label** (600, 13px, 0.08em tracking, uppercase, muted): the right-hand fact on each section flap.
-- **Mono figure** (500–600, 11–13px): chart values and axes, treemap sizes, terminal code, footer fine print.
+- **Mono figure** (500–600, 11–13px): chart values and axes, terminal code, footer fine print.
 
 ### Named Rules
 **The Expanded Weight Rule.** Display roles are always 900 weight at a widened width (112% or more). Normal-width 900 reads like a web app, not packaging.
@@ -218,19 +214,19 @@ On the back panel, the page gutter is 56px on desktop and 16px on mobile. Sectio
 
 ## Elevation & Depth
 
-Flat print. There are no shadows anywhere. Depth comes from the surface swap (carton against paper against table), from tone (a white panel on paper), and from the weight of the rules (a 1px hairline, a 2–3px keyline, a 4px box edge, a 10px panel bar). The treemap blocks get their edge from an inset carton outline, not a shadow.
+Flat print. There are no shadows anywhere. Depth comes from the surface swap (carton against paper against table), from tone (a white panel on paper), and from the weight of the rules (a 1px hairline, a 2–3px keyline, a 4px box edge, a 10px panel bar).
 
 **The Flat Print Rule.** No box-shadow, no 3D box shading, no gradients for light. If something has to stand out, give it a heavier rule or a surface swap.
 
 ## Shapes
 
-Square by default. Everything printed on the box (buttons, panels, ruled cells, the requirements strip, the version tag, toggles) has 0 radius and a straw or ink keyline. Rounded corners appear only on objects that depict a Mac screen or icon: the app-window frame around the treemap, the terminal block and the app icon in the spine. That contrast is what separates "a picture of the app" from "the box".
+Square by default. Everything printed on the box (buttons, panels, ruled cells, the requirements strip, the version tag) has 0 radius and a straw or ink keyline. Rounded corners appear only on objects that depict a Mac screen or icon: the app-window frame around the screenshot, the terminal block and the app icon in the spine. That contrast is what separates "a picture of the app" from "the box".
 
 Dashed versus solid is a form rule:
-- **Solid:** on-disk size, Hahakigami's own bars, available actions.
-- **Dashed:** logical size, the competitor's bars, the Download button while no signed build exists.
+- **Solid:** Hahakigami's own bars, available actions.
+- **Dashed:** the competitor's bars, the Download button while no signed build exists.
 
-**The Solid-Dashed Rule.** A dashed stroke always means logical, competitor or not yet available, and nothing else. Never use dashes for decoration.
+**The Solid-Dashed Rule.** A dashed stroke always means competitor or not yet available, and nothing else. Never use dashes for decoration.
 
 ## Components
 
@@ -256,8 +252,11 @@ A white panel with a 4px ink border, padding 18px 22px, and a panel title over a
 ### Spec bars (signature)
 Bars on one shared 0–25s axis, over a track of 20% gridlines. Hahakigami is a solid ink bar; the competitor is a 2px dashed ink outline. Values are right-aligned mono. A legend repeats the solid/dashed code, and a caveat sits under a 2px rule. The one motion moment: bars grow over 700ms with cubic-bezier(0.16, 1, 0.3, 1), staggered 70ms, once 35% of the panel is visible. With reduced motion or no JS they are fully drawn from the start.
 
-### App window and treemap
-A carton frame with 12px radius and 12px padding, standing in for the app. The bar holds window dots on the left and a square segmented toggle (On disk / Logical) on the right. The toggle has a 2px straw border; the pressed segment fills straw. Blocks use the straw tonal ramp with carton text, a type size that follows bytes, and an inset 2px carton outline that turns dashed in Logical mode. Grid tracks re-flow over 500ms with the same ease-out curve.
+### App window and feature carousel
+A full-width carton frame (12px radius, 12px padding) holds a scroll-snap strip of app screenshots in the Guardian theme (`static/app-1.webp` to `app-4.webp`, 1280×820), one per feature. Under it, the four features sit in one row of ruled cells (3px ink, 2×2 at 860px) that act as the slide tabs: selecting a cell glides the strip to its shot, and swiping the strip moves the current cell. The current cell carries an 8px cord-red bar along its top, which grows in from the left.
+
+### Press run (band)
+Once on load, a roller lays the cord red across the band left to right (1050ms), its leading edge roughened by an SVG turbulence displacement filter, then each letter of the wordmark, and then 箒神, is stamped 70ms apart behind the roller and drifts from a carton-offset misprint into register (1100ms each). With reduced motion the band is simply printed.
 
 ### Requirements strip and top edge
 - **Requirements strip:** a row of bold 14px facts in square cells, 2px straw border and dividers.
@@ -276,7 +275,7 @@ Carton footer: the name at 40px/900, mono fine print, a straw barcode, and the D
 - **Do** keep cord red for actions, the current tab and the wordmark band only.
 - **Do** set display type at 900 weight and 112–125% width, and set measurements, dates and code in JetBrains Mono.
 - **Do** draw structure with square ink or straw rules (1px hairline, 2–3px keyline, 4px edge, 10px panel bar).
-- **Do** use dashed strokes for logical size, competitors and not-yet-available actions, and solid for everything real.
+- **Do** use dashed strokes for competitors and not-yet-available actions, and solid for everything real.
 - **Do** put every comparative bar on one shared axis and keep the caveat beside it.
 - **Do** keep the art clear of the copy: out of flow beside the copy on desktop, in flow below it on mobile.
 
