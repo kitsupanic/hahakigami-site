@@ -1,2 +1,6 @@
 # Standalone pnpm root.
 packages: []
+# wrangler's esbuild and workerd ship their binaries as optional packages, so their install scripts are not needed.
+allowBuilds:
+  esbuild: false
+  workerd: false

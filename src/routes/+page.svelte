@@ -8,7 +8,8 @@
   const title = 'Hahakigami — disk space analyzer for macOS';
   const description =
     'Hahakigami is a local disk-space analyzer for macOS. It scans a disk or folder, shows storage as a size-sorted tree, treemap or sunburst, lets you inspect files and moves a reviewed selection to the macOS Trash.';
-  const image = `${SITE_URL}/guardian-1440.webp`;
+  // JPG, not WebP: some link previews (LinkedIn) only accept JPG, PNG or GIF.
+  const image = `${SITE_URL}/og.jpg`;
   const barcode = [3, 1, 4, 2, 1, 3, 1, 5, 2, 1, 3, 2, 4, 1, 2];
 </script>
 
@@ -394,7 +395,7 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
   .back {
     display: flow-root;
     background: var(--paper);
-    padding: 72px var(--pad, 56px) 0;
+    padding: 72px 56px 0;
   }
   section {
     margin-bottom: 96px;

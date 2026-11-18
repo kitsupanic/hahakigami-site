@@ -20,14 +20,15 @@
 
   function show(i: number) {
     const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    current = i;
     track.scrollTo({ left: i * track.clientWidth, behavior: smooth ? 'smooth' : 'auto' });
   }
-  // The track is a native scroll-snap strip, so swipes and trackpads move it too; the tabs follow it.
+  // The track is a native scroll-snap strip, so swipes and trackpads move it too; the tabs follow it once it settles.
   const sync = () => (current = Math.round(track.scrollLeft / track.clientWidth));
 </script>
 
 <div class="shot carton">
-  <div class="track" bind:this={track} onscroll={sync} role="group" aria-label="Screenshots">
+  <div class="track" bind:this={track} onscrollend={sync} role="group" aria-label="Screenshots">
     {#each SLIDES as s, i (s.src)}
       <img
         src={s.src}

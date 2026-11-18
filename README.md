@@ -22,7 +22,9 @@ pnpm preview
 
 Served at `https://hahakigami.com` as static assets; `wrangler.jsonc` holds the Worker name, the `build` folder and the custom domain.
 
-- From Cloudflare (Workers Builds, connected to this repository): build command `pnpm build`, deploy command `npx wrangler deploy`.
-- By hand: `pnpm build && pnpm dlx wrangler deploy`.
+- From Cloudflare (Workers Builds, connected to this repository): build command `pnpm build`, deploy command `pnpm exec wrangler deploy`.
+- By hand: `pnpm build && pnpm exec wrangler deploy`.
 
-`hahakigami.app`, `www.hahakigami.app` and `www.hahakigami.com` redirect here through the small Worker in `redirect/`. It is deployed by hand: `cd redirect && pnpm dlx wrangler deploy`.
+`wrangler` is pinned in `devDependencies`, so every deploy uses the same version.
+
+`hahakigami.app`, `www.hahakigami.app` and `www.hahakigami.com` redirect here through the small Worker in `redirect/`. It is deployed by hand from the repository root: `pnpm exec wrangler deploy --config redirect/wrangler.jsonc`.

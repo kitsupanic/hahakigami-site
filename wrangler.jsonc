@@ -2,6 +2,6 @@
   // Static site only: Cloudflare serves the prerendered files in build/, no Worker code runs.
   "name": "hahakigami",
   "compatibility_date": "2026-11-01",
-  "assets": { "directory": "./build" },
+  "assets": { "directory": "./build", "not_found_handling": "404-page" },
   "routes": [{ "pattern": "hahakigami.com", "custom_domain": true }]
 }
