@@ -4,6 +4,8 @@
 
 <svelte:head>
   <title>Not found — Hahakigami</title>
+  <!-- /404 itself is served with status 200, so keep it out of search results. -->
+  <meta name="robots" content="noindex" />
 </svelte:head>
 
 <main class="carton">
