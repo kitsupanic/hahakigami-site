@@ -20,8 +20,7 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm check
+      # Also fails if build/404.html goes missing: Cloudflare serves it for unknown paths (wrangler.jsonc).
       - run: pnpm build
-      # Cloudflare serves this file for unknown paths (wrangler.jsonc); fail if the build stops writing it.
-      - run: grep -q 'Nothing on this shelf' build/404.html
       # The redirect Worker is deployed by hand, so check it keeps path and query.
       - run: node redirect/check.js

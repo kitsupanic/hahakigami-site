@@ -10,7 +10,7 @@
   },
   "scripts": {
     "dev": "vite dev --port 4620 --strictPort",
-    "build": "vite build",
+    "build": "vite build && grep -q 'Nothing on this shelf' build/404.html",
     "preview": "vite preview --port 4621",
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json"
   },
