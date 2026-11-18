@@ -87,6 +87,10 @@ a {
   letter-spacing: 0.02em;
   text-decoration: none;
 }
+.btn.red {
+  background: var(--cord);
+  color: var(--on-red);
+}
 
 /* Spec sheet and Requirements boxes on the back panel. */
 .panel {

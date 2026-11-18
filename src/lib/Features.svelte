@@ -25,11 +25,13 @@
   }
   // The track is a native scroll-snap strip, so swipes and trackpads move it too; the tabs follow it once it settles.
   const sync = () => (current = Math.round(track.scrollLeft / track.clientWidth));
-  // Browsers without scrollend (Safari through 18) sync on scroll, but only while the strip rests on a slide.
+  // Browsers without scrollend (Safari through 18) sync once scrolling has been quiet for 100 ms,
+  // so a tab click's smooth scroll never flips the tabs back to the slide it is leaving.
+  let settle: ReturnType<typeof setTimeout>;
   function scrolled() {
     if ('onscrollend' in window) return;
-    const x = track.scrollLeft / track.clientWidth;
-    if (Math.abs(x - Math.round(x)) < 0.01) sync();
+    clearTimeout(settle);
+    settle = setTimeout(sync, 100);
   }
 </script>
 
