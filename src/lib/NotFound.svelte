@@ -9,7 +9,7 @@
 <main class="carton">
   <p class="code">{status}</p>
   <h1>Nothing on this shelf.</h1>
-  <p><a class="btn" href="/">Back to Hahakigami</a></p>
+  <p><a class="btn red" href="/">Back to Hahakigami</a></p>
 </main>
 
 <style>
@@ -31,9 +31,5 @@
     font-weight: 900;
     font-stretch: 112%;
     line-height: 1;
-  }
-  .btn {
-    background: var(--cord);
-    color: var(--on-red);
   }
 </style>
