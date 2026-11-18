@@ -25,10 +25,16 @@
   }
   // The track is a native scroll-snap strip, so swipes and trackpads move it too; the tabs follow it once it settles.
   const sync = () => (current = Math.round(track.scrollLeft / track.clientWidth));
+  // Browsers without scrollend (Safari through 18) sync on scroll, but only while the strip rests on a slide.
+  function scrolled() {
+    if ('onscrollend' in window) return;
+    const x = track.scrollLeft / track.clientWidth;
+    if (Math.abs(x - Math.round(x)) < 0.01) sync();
+  }
 </script>
 
 <div class="shot carton">
-  <div class="track" bind:this={track} onscrollend={sync} role="group" aria-label="Screenshots">
+  <div class="track" bind:this={track} onscroll={scrolled} onscrollend={sync} role="group" aria-label="Screenshots">
     {#each SLIDES as s, i (s.src)}
       <img
         src={s.src}
