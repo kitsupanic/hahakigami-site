@@ -7,7 +7,8 @@
     ['inside', 'Inside'],
     ['bench', 'Benchmarks'],
     ['cli', 'CLI & MCP'],
-    ['privacy', 'Privacy']
+    ['privacy', 'Privacy'],
+    ['roadmap', 'Roadmap']
   ];
 
   // The first viewport (hero) counts as Steps, so one tab is always current.
@@ -23,6 +24,15 @@
     else el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto' });
     replaceState(id === 'top' ? location.pathname : `#${id}`, {});
   }
+
+  // On phones the tabs are a sideways-scrolling strip; keep the current one in view.
+  let nav: HTMLElement;
+  $effect(() => {
+    const a = nav.querySelector<HTMLElement>(`a[href="#${active}"]`);
+    if (!a || nav.scrollWidth <= nav.clientWidth) return;
+    const n = nav.getBoundingClientRect(), r = a.getBoundingClientRect();
+    nav.scrollBy({ left: r.left - n.left - (n.width - r.width) / 2 });
+  });
 
   onMount(() => {
     // A thin band across the middle of the viewport decides the current section; the hero maps to Steps.
@@ -54,7 +64,7 @@
 
 <aside class="spine carton">
   <img class="mark" src="/favicon.png" alt="" width="56" height="56" />
-  <nav aria-label="Sections">
+  <nav aria-label="Sections" bind:this={nav}>
     {#each links as [id, label] (id)}
       <a href="#{id}" onclick={(e) => go(e, id)} aria-current={active === id ? 'true' : undefined}>{label}</a>
     {/each}
