@@ -120,7 +120,7 @@
         </section>
 
         <section id="bench">
-          <div class="flap"><h2>Spec sheet</h2><span>Measured 19 Oct 2026 · warm medians</span></div>
+          <div class="flap"><h2>Spec sheet</h2><span>Measured 22 Nov 2026 · shipped apps</span></div>
           <div class="spec">
             <SpecSheet />
             <div class="panel reqs">

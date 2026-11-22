@@ -1,13 +1,25 @@
 <script lang="ts">
   import { onMount } from 'svelte';
 
-  const AXIS_MAX = 25; // seconds, shared by every bar
+  // Shipped apps scanning the whole startup disk, 22 Nov 2026, one run each (docs/BENCHMARKS.md in the app repo).
+  const AXIS_MAX = 75; // seconds, shared by every bar
   // Five equal steps; the track's gridlines (every 20%) line up with these labels.
   const TICKS = [0, 1, 2, 3, 4, 5].map((i) => (AXIS_MAX / 5) * i);
   const groups = [
-    { name: 'GitHub project folder', rows: [{ tool: 'Hahakigami', s: 3.14 }, { tool: 'OpenDisk', s: 4.572 }] },
-    { name: 'Home folder', rows: [{ tool: 'Hahakigami', s: 13.126 }, { tool: 'OpenDisk', s: 18.793 }] },
-    { name: 'Whole startup disk', rows: [{ tool: 'Hahakigami', s: 18.583 }, { tool: 'OpenDisk', s: 18.14 }] }
+    {
+      name: 'First scan',
+      rows: [{ tool: 'Hahakigami', s: 41.2 }, { tool: 'OpenDisk', s: 31.3 }, { tool: 'Radix', s: 63 }]
+    },
+    {
+      name: 'Rescan',
+      rows: [{ tool: 'Hahakigami', s: 40.9 }, { tool: 'OpenDisk', s: 4.4 }, { tool: 'Radix', s: 66 }]
+    }
+  ];
+  // Peak resident memory of each app's main process during its scans.
+  const memory = [
+    { tool: 'Hahakigami', v: '1.42 GiB' },
+    { tool: 'OpenDisk', v: '4.2 GiB' },
+    { tool: 'Radix', v: '5.7 GiB' }
   ];
 
   let panel: HTMLElement;
@@ -33,7 +45,7 @@
 </script>
 
 <div class="panel" class:armed class:shown bind:this={panel}>
-  <h3>Time to first result</h3>
+  <h3>Whole startup disk</h3>
   {#each groups as g, gi (g.name)}
     <h4>{g.name}</h4>
     <ul>
@@ -42,9 +54,9 @@
         <li>
           <span class="lab">{r.tool}</span>
           <span class="track" aria-hidden="true">
-            <i class:other={!own} style="--w:{(r.s / AXIS_MAX) * 100}%; --d:{(gi * 2 + ri) * 70}ms"></i>
+            <i class:other={!own} style="--w:{(r.s / AXIS_MAX) * 100}%; --d:{(gi * 3 + ri) * 70}ms"></i>
           </span>
-          <span class="v">{r.s.toFixed(1)} s</span>
+          <span class="v">{r.s} s</span>
         </li>
       {/each}
     </ul>
@@ -55,11 +67,18 @@
     <span></span>
   </div>
   <p class="legend">
-    <span><i class="sw" aria-hidden="true"></i>Hahakigami</span><span><i class="sw other" aria-hidden="true"></i>OpenDisk</span>
+    <span><i class="sw" aria-hidden="true"></i>Hahakigami</span><span><i class="sw other" aria-hidden="true"></i>Other apps</span>
   </p>
+  <h4>Peak memory</h4>
+  <ul>
+    {#each memory as m (m.tool)}
+      <li class="mem"><span class="lab">{m.tool}</span><span class="v">{m.v}</span></li>
+    {/each}
+  </ul>
   <p class="caveat">
-    About 30% faster on folders and Home. On a full startup-disk scan OpenDisk is still slightly ahead. Peak memory
-    on a project folder: 146 MiB vs 225 MiB.
+    OpenDisk scans fastest and rescans from its cache; Hahakigami always rescans the startup disk in full. OpenDisk
+    reports 916.7 GB, more than the disk holds (801.9 GB in use), because it counts APFS clone copies at full size.
+    Hahakigami and Radix agree to within 0.1 GB. One run per app on an M4 Pro.
   </p>
 </div>
 
@@ -88,6 +107,9 @@
   }
   .lab {
     font-weight: 700;
+  }
+  li.mem {
+    grid-template-columns: 110px 1fr;
   }
   .track {
     position: relative;
@@ -172,6 +194,9 @@
     li,
     .axis {
       grid-template-columns: 86px 1fr 52px;
+    }
+    li.mem {
+      grid-template-columns: 86px 1fr;
     }
     .panel {
       padding-inline: 14px;
