@@ -210,7 +210,7 @@ The box front fills at least one viewport. The Guardian art is min(54vw, max(720
 
 On the back panel, the page gutter is 56px on desktop and 16px on mobile. Sections are 96px apart on desktop, 72px on mobile. Each section opens with a flap (title left, mono fact right, a 4px ink rule under it, 40px below). Content uses asymmetric two-column grids (1.6:1, 1.3:1, 1:1.5) with 32–40px gaps, or ruled multi-cell rows (4 steps, 3 privacy columns). Those rows collapse to 2 and then 1 column at 860px and 520px. Cell padding is about 22–24px.
 
-**The Shared Axis Rule.** Every bar on the spec sheet uses one seconds axis (0–25s). Never rescale a bar group on its own to make a result look bigger.
+**The Shared Axis Rule.** Every bar in one scorecard column shares that column's axis: both scan-time columns on 0–75 s, peak memory on 0–6 GiB. Never rescale a bar group on its own to make a result look bigger.
 
 ## Elevation & Depth
 
@@ -247,10 +247,10 @@ The heading strip that opens every back-panel section: a title on the left, a mo
 The steps row and the privacy row: a 3px ink border around the row, with 3px dividers between cells. Cells have about 22–24px padding and no fill.
 
 ### Spec panel
-A white panel with a 4px ink border, padding 18px 22px, and a panel title over a 10px ink bar. Inside, rows are split by ink hairlines at 27%. It is used for the benchmark chart and for the requirements definition list.
+A white panel with a 4px ink border, padding 18px 22px, and a panel title over a 10px ink bar. Inside, rows are split by ink hairlines at 27%. It holds the spec-sheet scorecard.
 
-### Spec bars (signature)
-Bars on one shared 0–25s axis, over a track of 20% gridlines. Hahakigami is a solid ink bar; the competitor is a 2px dashed ink outline. Values are right-aligned mono. A legend repeats the solid/dashed code, and a caveat sits under a 2px rule. The one motion moment: bars grow over 700ms with cubic-bezier(0.16, 1, 0.3, 1), staggered 70ms, once 35% of the panel is visible. With reduced motion or no JS they are fully drawn from the start.
+### Scorecard (signature)
+One row per app, one column per measure: first scan, rescan, peak memory and the disk total each app reports. Each figure is mono, with an 8px bar under it on its column's shared axis: solid for Hahakigami, a 2px dashed outline for other apps. Hahakigami's row is printed on carton (surface swap, straw type). The lowest figure in each measured column is underlined 3px, never coloured. Small mono notes sit under a figure when it needs context (a cached rescan, a total larger than the disk). A key repeats the underline and solid/dashed codes, and the test machine runs as one line of mono small print under a 2px rule. On phones each app becomes a block of labelled figures, two per line. The one motion moment: bars grow over 700ms with cubic-bezier(0.16, 1, 0.3, 1), staggered 50ms, once 35% of the panel is visible. With reduced motion or no JS they are fully drawn from the start.
 
 ### App window and feature carousel
 A full-width carton frame (12px radius, 12px padding) holds a scroll-snap strip of app screenshots in the Guardian theme (`static/app-1.webp` to `app-4.webp`, 1280×820), one per feature. Under it, the four features sit in one row of ruled cells (3px ink, 2×2 at 860px) that act as the slide tabs: selecting a cell glides the strip to its shot, and swiping the strip moves the current cell. The current cell carries an 8px cord-red bar along its top, which grows in from the left.

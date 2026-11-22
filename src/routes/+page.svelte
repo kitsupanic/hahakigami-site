@@ -21,6 +21,29 @@
   ];
   const shipping = ROADMAP.filter((r) => r.available).length;
   const kinds = [...new Set(ROADMAP.map((r) => r.kind))];
+  // Shipped apps scanning the whole startup disk, 22 Nov 2026, one run each (docs/BENCHMARKS.md in the app repo).
+  // Memory is the peak resident size of each app's main process during those scans.
+  const APPS = [
+    { tool: 'Hahakigami', first: 41.2, rescan: 40.9, memory: 1.42, total: '746.4 GB', own: true },
+    {
+      tool: 'OpenDisk',
+      first: 31.3,
+      rescan: 4.4,
+      memory: 4.2,
+      total: '916.7 GB',
+      notes: { rescan: 'from its cache', total: 'more than the 801.9 GB in use' }
+    },
+    { tool: 'Radix', first: 63, rescan: 66, memory: 5.7, total: '746.3 GB' }
+  ];
+  // Where those numbers were measured (docs/BENCHMARKS.md; disk capacity from diskutil on the same Mac).
+  const TEST_ENV: [string, string][] = [
+    ['Chip', 'Apple M4 Pro'],
+    ['Memory', '24 GiB'],
+    ['System', 'macOS 26.5'],
+    ['Startup disk', '994.7 GB SSD, 801.9 GB in use'],
+    ['Contents', '6.75 million items in 1.00 million folders'],
+    ['Runs', 'One per app, warm caches']
+  ];
   const barcode = [3, 1, 4, 2, 1, 3, 1, 5, 2, 1, 3, 2, 4, 1, 2];
 </script>
 
@@ -120,25 +143,8 @@
         </section>
 
         <section id="bench">
-          <div class="flap"><h2>Spec sheet</h2><span>Measured 19 Oct 2026 · warm medians</span></div>
-          <div class="spec">
-            <SpecSheet />
-            <div class="panel reqs">
-              <h3>Requirements</h3>
-              <dl>
-                <dt>System</dt>
-                <dd>macOS 14 Sonoma or later</dd>
-                <dt>Access</dt>
-                <dd>Full Disk Access recommended; you turn it on in System Settings</dd>
-                <dt>Network</dt>
-                <dd>None. No accounts, no analytics</dd>
-                <dt>Built with</dt>
-                <dd>Rust, Tauri 2 and Svelte 5</dd>
-                <dt>License</dt>
-                <dd>MIT, open source</dd>
-              </dl>
-            </div>
-          </div>
+          <div class="flap"><h2>Spec sheet</h2><span>Measured 22 Nov 2026 · shipped apps</span></div>
+          <SpecSheet apps={APPS} machine={TEST_ENV} />
         </section>
 
         <section id="cli">
@@ -486,27 +492,6 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
     color: var(--ink-soft);
   }
 
-  .spec {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 40px;
-    align-items: start;
-  }
-  .reqs dl {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    margin-top: 8px;
-    font-size: 15px;
-  }
-  .reqs dt,
-  .reqs dd {
-    padding: 10px 0;
-    border-bottom: 1px solid color-mix(in srgb, var(--ink) 27%, transparent);
-  }
-  .reqs dt {
-    padding-right: 18px;
-    font-weight: 800;
-  }
 
   .cli {
     display: grid;
@@ -699,7 +684,6 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
       border-left: 0;
       border-top: 3px solid var(--rule);
     }
-    .spec,
     .cli {
       grid-template-columns: minmax(0, 1fr);
     }
