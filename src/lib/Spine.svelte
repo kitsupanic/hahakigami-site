@@ -101,9 +101,9 @@
   }
   nav a {
     white-space: nowrap;
-    padding: clamp(6px, 1.1vh, 10px) 6px;
+    padding: clamp(4px, 0.8vh, 10px) 6px;
     font-weight: 800;
-    font-size: clamp(11px, 1.5vh, 13px);
+    font-size: clamp(10px, 1.2vh, 13px);
     letter-spacing: 0.18em;
     text-transform: uppercase;
     text-decoration: none;
@@ -121,7 +121,7 @@
     transform: rotate(180deg);
     font-weight: 900;
     /* Scales with screen height so the spine fits on laptop screens. */
-    font-size: clamp(16px, 2.4vh, 26px);
+    font-size: clamp(14px, 2vh, 26px);
     font-stretch: 125%;
     letter-spacing: 0.08em;
     text-transform: uppercase;
@@ -133,7 +133,7 @@
   }
 
   /* Very short windows: the name is already on the red band, so drop it from the spine. */
-  @media (max-height: 720px) and (min-width: 861px) {
+  @media (max-height: 760px) and (min-width: 861px) {
     .name {
       display: none;
     }
