@@ -21,6 +21,15 @@
   ];
   const shipping = ROADMAP.filter((r) => r.available).length;
   const kinds = [...new Set(ROADMAP.map((r) => r.kind))];
+  // Shipped apps scanning the whole startup disk, 22 Nov 2026, one run each (docs/BENCHMARKS.md in the app repo).
+  const SCAN_TIME = [
+    { name: 'First scan', rows: [{ tool: 'Hahakigami', v: 41.2 }, { tool: 'OpenDisk', v: 31.3 }, { tool: 'Radix', v: 63 }] },
+    { name: 'Rescan', rows: [{ tool: 'Hahakigami', v: 40.9 }, { tool: 'OpenDisk', v: 4.4 }, { tool: 'Radix', v: 66 }] }
+  ];
+  // Peak resident memory of each app's main process during those scans.
+  const MEMORY = [
+    { name: 'During the scans', rows: [{ tool: 'Hahakigami', v: 1.42 }, { tool: 'OpenDisk', v: 4.2 }, { tool: 'Radix', v: 5.7 }] }
+  ];
   const barcode = [3, 1, 4, 2, 1, 3, 1, 5, 2, 1, 3, 2, 4, 1, 2];
 </script>
 
@@ -122,22 +131,17 @@
         <section id="bench">
           <div class="flap"><h2>Spec sheet</h2><span>Measured 22 Nov 2026 · shipped apps</span></div>
           <div class="spec">
-            <SpecSheet />
-            <div class="panel reqs">
-              <h3>Requirements</h3>
-              <dl>
-                <dt>System</dt>
-                <dd>macOS 14 Sonoma or later</dd>
-                <dt>Access</dt>
-                <dd>Full Disk Access recommended; you turn it on in System Settings</dd>
-                <dt>Network</dt>
-                <dd>None. No accounts, no analytics</dd>
-                <dt>Built with</dt>
-                <dd>Rust, Tauri 2 and Svelte 5</dd>
-                <dt>License</dt>
-                <dd>MIT, open source</dd>
-              </dl>
-            </div>
+            <SpecSheet title="Whole startup disk" unit="s" max={75} groups={SCAN_TIME}>
+              <p class="caveat">
+                OpenDisk scans fastest and rescans from its cache; Hahakigami always rescans the startup disk in full.
+              </p>
+            </SpecSheet>
+            <SpecSheet title="Peak memory" unit="GiB" max={6} steps={6} groups={MEMORY}>
+              <p class="caveat">
+                OpenDisk reports 916.7 GB, more than the disk holds (801.9 GB in use), because it counts APFS clone
+                copies at full size. Hahakigami and Radix agree to within 0.1 GB. One run per app on an M4 Pro.
+              </p>
+            </SpecSheet>
           </div>
         </section>
 
@@ -490,24 +494,8 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
     display: grid;
     grid-template-columns: 1.3fr 1fr;
     gap: 40px;
-    align-items: start;
+    align-items: stretch;
   }
-  .reqs dl {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    margin-top: 8px;
-    font-size: 15px;
-  }
-  .reqs dt,
-  .reqs dd {
-    padding: 10px 0;
-    border-bottom: 1px solid color-mix(in srgb, var(--ink) 27%, transparent);
-  }
-  .reqs dt {
-    padding-right: 18px;
-    font-weight: 800;
-  }
-
   .cli {
     display: grid;
     grid-template-columns: 1fr 1.5fr;

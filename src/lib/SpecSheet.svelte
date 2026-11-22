@@ -1,26 +1,18 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, type Snippet } from 'svelte';
 
-  // Shipped apps scanning the whole startup disk, 22 Nov 2026, one run each (docs/BENCHMARKS.md in the app repo).
-  const AXIS_MAX = 75; // seconds, shared by every bar
-  // Five equal steps; the track's gridlines (every 20%) line up with these labels.
-  const TICKS = [0, 1, 2, 3, 4, 5].map((i) => (AXIS_MAX / 5) * i);
-  const groups = [
-    {
-      name: 'First scan',
-      rows: [{ tool: 'Hahakigami', s: 41.2 }, { tool: 'OpenDisk', s: 31.3 }, { tool: 'Radix', s: 63 }]
-    },
-    {
-      name: 'Rescan',
-      rows: [{ tool: 'Hahakigami', s: 40.9 }, { tool: 'OpenDisk', s: 4.4 }, { tool: 'Radix', s: 66 }]
-    }
-  ];
-  // Peak resident memory of each app's main process during its scans.
-  const memory = [
-    { tool: 'Hahakigami', v: '1.42 GiB' },
-    { tool: 'OpenDisk', v: '4.2 GiB' },
-    { tool: 'Radix', v: '5.7 GiB' }
-  ];
+  type Group = { name: string; rows: { tool: string; v: number }[] };
+  // One panel = one axis: every bar in it shares `max`, split into `steps` gridlines.
+  let {
+    title,
+    unit,
+    max,
+    steps = 5,
+    groups,
+    children
+  }: { title: string; unit: string; max: number; steps?: number; groups: Group[]; children?: Snippet } = $props();
+  const ticks = $derived(Array.from({ length: steps + 1 }, (_, i) => +((max / steps) * i).toFixed(2)));
+  const rowsBefore = (gi: number) => groups.slice(0, gi).reduce((n, g) => n + g.rows.length, 0);
 
   let panel: HTMLElement;
   // Bars are fully visible until JS confirms it can animate: armed collapses them, shown grows them.
@@ -44,8 +36,8 @@
   });
 </script>
 
-<div class="panel" class:armed class:shown bind:this={panel}>
-  <h3>Whole startup disk</h3>
+<div class="panel" class:armed class:shown bind:this={panel} style:--steps={steps}>
+  <h3>{title}</h3>
   {#each groups as g, gi (g.name)}
     <h4>{g.name}</h4>
     <ul>
@@ -54,32 +46,22 @@
         <li>
           <span class="lab">{r.tool}</span>
           <span class="track" aria-hidden="true">
-            <i class:other={!own} style="--w:{(r.s / AXIS_MAX) * 100}%; --d:{(gi * 3 + ri) * 70}ms"></i>
+            <i class:other={!own} style="--w:{(r.v / max) * 100}%; --d:{(rowsBefore(gi) + ri) * 70}ms"></i>
           </span>
-          <span class="v">{r.s} s</span>
+          <span class="v">{r.v} {unit}</span>
         </li>
       {/each}
     </ul>
   {/each}
   <div class="axis" aria-hidden="true">
     <span></span>
-    <div>{#each TICKS as t, i (t)}<span>{t}{i === TICKS.length - 1 ? ' s' : ''}</span>{/each}</div>
+    <div>{#each ticks as t, i (t)}<span>{t}{i === ticks.length - 1 ? ` ${unit}` : ''}</span>{/each}</div>
     <span></span>
   </div>
   <p class="legend">
     <span><i class="sw" aria-hidden="true"></i>Hahakigami</span><span><i class="sw other" aria-hidden="true"></i>Other apps</span>
   </p>
-  <h4>Peak memory</h4>
-  <ul>
-    {#each memory as m (m.tool)}
-      <li class="mem"><span class="lab">{m.tool}</span><span class="v">{m.v}</span></li>
-    {/each}
-  </ul>
-  <p class="caveat">
-    OpenDisk scans fastest and rescans from its cache; Hahakigami always rescans the startup disk in full. OpenDisk
-    reports 916.7 GB, more than the disk holds (801.9 GB in use), because it counts APFS clone copies at full size.
-    Hahakigami and Radix agree to within 0.1 GB. One run per app on an M4 Pro.
-  </p>
+  {@render children?.()}
 </div>
 
 <style>
@@ -108,16 +90,13 @@
   .lab {
     font-weight: 700;
   }
-  li.mem {
-    grid-template-columns: 110px 1fr;
-  }
   .track {
     position: relative;
     height: 18px;
     background: repeating-linear-gradient(
       90deg,
-      transparent 0 calc(20% - 1px),
-      color-mix(in srgb, var(--ink) 20%, transparent) calc(20% - 1px) 20%
+      transparent 0 calc(100% / var(--steps) - 1px),
+      color-mix(in srgb, var(--ink) 20%, transparent) calc(100% / var(--steps) - 1px) calc(100% / var(--steps))
     );
   }
   .track i {
@@ -162,7 +141,7 @@
     background: none;
     border: 2px dashed var(--ink);
   }
-  .caveat {
+  .panel :global(.caveat) {
     max-width: 65ch;
     margin-top: 14px;
     padding-top: 12px;
@@ -193,10 +172,7 @@
   @media (max-width: 860px) {
     li,
     .axis {
-      grid-template-columns: 86px 1fr 52px;
-    }
-    li.mem {
-      grid-template-columns: 86px 1fr;
+      grid-template-columns: 86px 1fr 64px;
     }
     .panel {
       padding-inline: 14px;
