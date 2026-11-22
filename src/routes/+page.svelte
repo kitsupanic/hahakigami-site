@@ -22,16 +22,21 @@
   const shipping = ROADMAP.filter((r) => r.available).length;
   const kinds = [...new Set(ROADMAP.map((r) => r.kind))];
   // Shipped apps scanning the whole startup disk, 22 Nov 2026, one run each (docs/BENCHMARKS.md in the app repo).
-  const SCAN_TIME = [
-    { name: 'First scan', rows: [{ tool: 'Hahakigami', v: 41.2 }, { tool: 'OpenDisk', v: 31.3 }, { tool: 'Radix', v: 63 }] },
-    { name: 'Rescan', rows: [{ tool: 'Hahakigami', v: 40.9 }, { tool: 'OpenDisk', v: 4.4 }, { tool: 'Radix', v: 66 }] }
-  ];
-  // Peak resident memory of each app's main process during those scans.
-  const MEMORY = [
-    { name: 'During the scans', rows: [{ tool: 'Hahakigami', v: 1.42 }, { tool: 'OpenDisk', v: 4.2 }, { tool: 'Radix', v: 5.7 }] }
+  // Memory is the peak resident size of each app's main process during those scans.
+  const APPS = [
+    { tool: 'Hahakigami', first: 41.2, rescan: 40.9, memory: 1.42, total: '746.4 GB', own: true },
+    {
+      tool: 'OpenDisk',
+      first: 31.3,
+      rescan: 4.4,
+      memory: 4.2,
+      total: '916.7 GB',
+      notes: { rescan: 'from its cache', total: 'more than the 801.9 GB in use' }
+    },
+    { tool: 'Radix', first: 63, rescan: 66, memory: 5.7, total: '746.3 GB' }
   ];
   // Where those numbers were measured (docs/BENCHMARKS.md; disk capacity from diskutil on the same Mac).
-  const TEST_ENV = [
+  const TEST_ENV: [string, string][] = [
     ['Chip', 'Apple M4 Pro'],
     ['Memory', '24 GiB'],
     ['System', 'macOS 26.5'],
@@ -139,25 +144,7 @@
 
         <section id="bench">
           <div class="flap"><h2>Spec sheet</h2><span>Measured 22 Nov 2026 · shipped apps</span></div>
-          <div class="spec">
-            <SpecSheet title="Whole startup disk" unit="s" max={75} groups={SCAN_TIME}>
-              <p class="caveat">
-                OpenDisk scans fastest and rescans from its cache; Hahakigami always rescans the startup disk in full.
-              </p>
-            </SpecSheet>
-            <SpecSheet title="Peak memory" unit="GiB" max={6} steps={6} groups={MEMORY}>
-              <p class="caveat">
-                OpenDisk reports 916.7 GB, more than the disk holds (801.9 GB in use), because it counts APFS clone
-                copies at full size. Hahakigami and Radix agree to within 0.1 GB.
-              </p>
-            </SpecSheet>
-            <div class="panel env">
-              <h3>Test machine</h3>
-              <dl>
-                {#each TEST_ENV as [k, v] (k)}<div><dt>{k}</dt><dd>{v}</dd></div>{/each}
-              </dl>
-            </div>
-          </div>
+          <SpecSheet apps={APPS} machine={TEST_ENV} />
         </section>
 
         <section id="cli">
@@ -505,34 +492,6 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
     color: var(--ink-soft);
   }
 
-  .spec {
-    display: grid;
-    grid-template-columns: 1.3fr 1fr;
-    gap: 40px;
-    align-items: stretch;
-  }
-  .env {
-    grid-column: 1 / -1;
-  }
-  .env dl {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    margin-top: 4px;
-  }
-  .env div {
-    padding: 12px 18px 12px 0;
-    border-bottom: 1px solid color-mix(in srgb, var(--ink) 27%, transparent);
-  }
-  .env dt {
-    font-size: 12px;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-  }
-  .env dd {
-    margin-top: 6px;
-    font: 600 14px/1.4 var(--font-mono);
-  }
 
   .cli {
     display: grid;
@@ -725,18 +684,11 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
       border-left: 0;
       border-top: 3px solid var(--rule);
     }
-    .spec,
     .cli {
       grid-template-columns: minmax(0, 1fr);
     }
-    .env dl {
-      grid-template-columns: repeat(2, 1fr);
-    }
   }
   @media (max-width: 520px) {
-    .env dl {
-      grid-template-columns: 1fr;
-    }
     .steps {
       grid-template-columns: 1fr;
     }
