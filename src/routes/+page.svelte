@@ -30,6 +30,15 @@
   const MEMORY = [
     { name: 'During the scans', rows: [{ tool: 'Hahakigami', v: 1.42 }, { tool: 'OpenDisk', v: 4.2 }, { tool: 'Radix', v: 5.7 }] }
   ];
+  // Where those numbers were measured (docs/BENCHMARKS.md; disk capacity from diskutil on the same Mac).
+  const TEST_ENV = [
+    ['Chip', 'Apple M4 Pro'],
+    ['Memory', '24 GiB'],
+    ['System', 'macOS 26.5'],
+    ['Startup disk', '994.7 GB SSD, 801.9 GB in use'],
+    ['Contents', '6.75 million items in 1.00 million folders'],
+    ['Runs', 'One per app, warm caches']
+  ];
   const barcode = [3, 1, 4, 2, 1, 3, 1, 5, 2, 1, 3, 2, 4, 1, 2];
 </script>
 
@@ -139,9 +148,15 @@
             <SpecSheet title="Peak memory" unit="GiB" max={6} steps={6} groups={MEMORY}>
               <p class="caveat">
                 OpenDisk reports 916.7 GB, more than the disk holds (801.9 GB in use), because it counts APFS clone
-                copies at full size. Hahakigami and Radix agree to within 0.1 GB. One run per app on an M4 Pro.
+                copies at full size. Hahakigami and Radix agree to within 0.1 GB.
               </p>
             </SpecSheet>
+            <div class="panel env">
+              <h3>Test machine</h3>
+              <dl>
+                {#each TEST_ENV as [k, v] (k)}<div><dt>{k}</dt><dd>{v}</dd></div>{/each}
+              </dl>
+            </div>
           </div>
         </section>
 
@@ -496,6 +511,29 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
     gap: 40px;
     align-items: stretch;
   }
+  .env {
+    grid-column: 1 / -1;
+  }
+  .env dl {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    margin-top: 4px;
+  }
+  .env div {
+    padding: 12px 18px 12px 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 27%, transparent);
+  }
+  .env dt {
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .env dd {
+    margin-top: 6px;
+    font: 600 14px/1.4 var(--font-mono);
+  }
+
   .cli {
     display: grid;
     grid-template-columns: 1fr 1.5fr;
@@ -691,8 +729,14 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
     .cli {
       grid-template-columns: minmax(0, 1fr);
     }
+    .env dl {
+      grid-template-columns: repeat(2, 1fr);
+    }
   }
   @media (max-width: 520px) {
+    .env dl {
+      grid-template-columns: 1fr;
+    }
     .steps {
       grid-template-columns: 1fr;
     }
