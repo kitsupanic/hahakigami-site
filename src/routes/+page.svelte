@@ -10,6 +10,14 @@
     'Hahakigami is a local disk-space analyzer for macOS. It scans a disk or folder, shows storage as a size-sorted tree, treemap or sunburst, lets you inspect files and moves a reviewed selection to the macOS Trash.';
   // JPG, not WebP: some link previews (LinkedIn) only accept JPG, PNG or GIF.
   const image = `${SITE_URL}/og.jpg`;
+  // Add a roadmap point here; each kind gets its own column. Flip `available` when it ships.
+  const ROADMAP = [
+    { name: 'macOS', kind: 'Platform', status: 'Available · macOS 14+', available: true },
+    { name: 'Windows', kind: 'Platform', status: 'Planned', available: false },
+    { name: 'Linux', kind: 'Platform', status: 'Planned', available: false }
+  ];
+  const shipping = ROADMAP.filter((r) => r.available).length;
+  const kinds = [...new Set(ROADMAP.map((r) => r.kind))];
   const barcode = [3, 1, 4, 2, 1, 3, 1, 5, 2, 1, 3, 2, 4, 1, 2];
 </script>
 
@@ -171,6 +179,26 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
               <p>It only checks whether Full Disk Access is on. You decide in System Settings.</p>
             </div>
           </div>
+        </section>
+
+        <section id="roadmap">
+          <div class="flap"><h2>Roadmap</h2><span>{shipping} shipping · {ROADMAP.length - shipping} planned</span></div>
+          <div class="tracks">
+            {#each kinds as kind (kind)}
+              <div class="track">
+                <h3>{kind}s</h3>
+                <ul>
+                  {#each ROADMAP.filter((r) => r.kind === kind) as r (r.name)}
+                    <li class:carton={r.available} class:soon={!r.available}>
+                      <span class="tn">{r.name}</span>
+                      <span class="ts">{r.status}</span>
+                    </li>
+                  {/each}
+                </ul>
+              </div>
+            {/each}
+          </div>
+          <p class="road-note">Solid is in the box today; dashed is not yet available. Follow progress on <a href={GITHUB_URL}>GitHub</a>.</p>
         </section>
       </div>
     </main>
@@ -522,6 +550,62 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
     font-size: 15px;
     line-height: 1.5;
     max-width: 50ch;
+  }
+
+  /* One column per kind, each growing downward; solid carton is shipping, a dashed outline is not yet available. */
+  .tracks {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 40px;
+  }
+  .track h3 {
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 3px solid var(--rule);
+    font-size: 24px;
+    font-weight: 900;
+    font-stretch: 115%;
+  }
+  .track ul {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+  }
+  .track li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 8px 16px;
+    padding: 18px 22px;
+    border: 3px solid var(--carton);
+  }
+  .track .soon {
+    border-style: dashed;
+    border-color: var(--rule);
+  }
+  .tn {
+    font-size: 26px;
+    font-weight: 900;
+    font-stretch: 120%;
+    line-height: 1;
+  }
+  .track .carton .tn {
+    color: var(--straw);
+  }
+  .ts {
+    font: 600 13px var(--font-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  .soon .ts {
+    color: var(--muted);
+  }
+  .road-note {
+    margin-top: 18px;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--ink-soft);
   }
 
   /* Bottom flap */
