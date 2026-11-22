@@ -14,15 +14,34 @@
   // The first viewport (hero) counts as Steps, so one tab is always current.
   let active = $state<string>('steps');
 
-  // Glide to the target ourselves: the router's hash navigation jumps.
+  // Glide to the target ourselves: the router's hash navigation jumps, and some browsers
+  // (Vivaldi on macOS) ignore behavior: 'smooth', so the page animates the scroll itself.
+  let glide = 0;
+  let stopGlide = () => {};
   function go(e: MouseEvent, id: string) {
     const el = document.getElementById(id);
     if (!el || e.metaKey || e.ctrlKey || e.shiftKey) return;
     e.preventDefault();
-    const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (id === 'top') scrollTo({ top: 0, behavior: smooth ? 'smooth' : 'auto' });
-    else el.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto' });
+    const margin = parseFloat(getComputedStyle(el).scrollMarginTop) || 0;
+    const max = document.documentElement.scrollHeight - innerHeight;
+    const to = id === 'top' ? 0 : Math.min(max, Math.max(0, el.getBoundingClientRect().top + scrollY - margin));
     replaceState(id === 'top' ? location.pathname : `#${id}`, {});
+    stopGlide();
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return scrollTo({ top: to, behavior: 'instant' });
+    const from = scrollY;
+    const ms = Math.min(900, 350 + Math.abs(to - from) / 8);
+    const start = performance.now();
+    // The reader's own wheel, touch or key input wins over the glide.
+    const input = new AbortController();
+    stopGlide = () => (cancelAnimationFrame(glide), input.abort());
+    for (const t of ['wheel', 'touchstart', 'keydown']) addEventListener(t, stopGlide, { passive: true, signal: input.signal });
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / ms);
+      scrollTo({ top: t < 1 ? from + (to - from) * (1 - Math.pow(2, -10 * t)) : to, behavior: 'instant' });
+      if (t < 1) glide = requestAnimationFrame(step);
+      else input.abort();
+    };
+    glide = requestAnimationFrame(step);
   }
 
   // On phones the tabs are a sideways-scrolling strip; keep the current one in view.
