@@ -63,7 +63,10 @@
 
 <style>
   /* The app window: a carton frame, rounded because it depicts a Mac screen. */
+  /* Sized from the window height so the flap, the screen and the tabs fit on one screen when the section opens. */
   .shot {
+    max-width: max(480px, calc((100svh - 364px) * 1280 / 820 + 24px));
+    margin-inline: auto;
     border-radius: 12px;
     padding: 12px;
   }
