@@ -14,7 +14,10 @@
   const ROADMAP = [
     { name: 'macOS', kind: 'Platform', status: 'Available · macOS 14+', available: true },
     { name: 'Windows', kind: 'Platform', status: 'Planned', available: false },
-    { name: 'Linux', kind: 'Platform', status: 'Planned', available: false }
+    { name: 'Linux', kind: 'Platform', status: 'Planned', available: false },
+    { name: 'Scan saving', kind: 'Feature', status: 'Planned', available: false },
+    { name: 'Scans comparison', kind: 'Feature', status: 'Planned', available: false },
+    { name: 'Network disk support', kind: 'Feature', status: 'Planned', available: false }
   ];
   const shipping = ROADMAP.filter((r) => r.available).length;
   const kinds = [...new Set(ROADMAP.map((r) => r.kind))];
@@ -52,7 +55,7 @@
             class="art"
             src="/guardian-720.webp"
             srcset="/guardian-720.webp 720w, /guardian-1440.webp 1440w"
-            sizes="(max-width: 860px) min(72vw, 420px), min(54vw, 720px)"
+            sizes="(max-width: 860px) min(72vw, 420px), min(54vw, max(720px, 75vh))"
             width="720"
             height="720"
             fetchpriority="high"
@@ -220,9 +223,6 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
 <style>
   .box {
     --spine: 96px;
-    --box: 1320px;
-    max-width: var(--box);
-    margin: 0 auto;
     display: grid;
     grid-template-columns: var(--spine) minmax(0, 1fr);
   }
@@ -230,7 +230,8 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
   /* Front panel */
   .front {
     --pad: 56px;
-    --art: min(54vw, 720px);
+    /* Grows past 720px only on tall, wide screens, where the hero would otherwise sit half empty. */
+    --art: min(54vw, max(720px, 75vh));
     position: relative;
     min-height: 100vh;
     overflow: hidden;
@@ -268,10 +269,10 @@ app=/Applications/Hahakigami.app/Contents/MacOS/hahakigami
   }
   /* The text column stops where the Guardian's artwork starts (art left edge + ~5% of its width, minus a gap). */
   .pitch {
-    max-width: calc(min(100vw, var(--box)) - var(--spine) + 30px - 0.95 * var(--art));
+    max-width: calc(100vw - var(--spine) + 30px - 0.95 * var(--art));
   }
   h1 {
-    font-size: clamp(34px, 4vw, 56px);
+    font-size: clamp(34px, 4vw, 88px);
     line-height: 1;
     font-weight: 900;
     font-stretch: 112%;

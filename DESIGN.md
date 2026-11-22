@@ -139,7 +139,7 @@ components:
 
 **Creative North Star: "The Retail Box"**
 
-The site is a software box, printed flat. Each part of the page is a part of the box. The sticky left spine is the box's spine. The first viewport is the box front: near-black carton, the Guardian art bleeding off the right edge, and a full-width spot-colour band with the wordmark. Everything after that is the back panel, an off-white card of ruled boxes, thick keylines and a spec sheet. The footer is the bottom flap, with a barcode. The whole box sits on a warm grey table that shows either side of the page at wide viewports.
+The site is a software box, printed flat. Each part of the page is a part of the box. The sticky left spine is the box's spine. The first viewport is the box front: near-black carton, the Guardian art bleeding off the right edge, and a full-width spot-colour band with the wordmark. Everything after that is the back panel, an off-white card of ruled boxes, thick keylines and a spec sheet. The footer is the bottom flap, with a barcode. The box fills the window edge to edge.
 
 It is dense and printed, never glossy. Depth comes from ink and rules, not light. The display face is very heavy and set at expanded widths, so it reads like box packaging. Figures, dates and code are set in mono, like the small print on a spec label. Dashed versus solid is a real code: solid means Hahakigami, available; dashed means a competitor, or not available yet.
 
@@ -168,7 +168,7 @@ A printed two-surface palette: dark carton and off-white paper, straw for type o
 - **Ink** (ink): text and every rule on paper (rules use the `rule` alias of ink). It is also the solid bar fill on the spec sheet. Hairlines are ink mixed to 20–33% opacity.
 - **Soft Ink** (ink-soft): step descriptions, one notch quieter than body.
 - **Muted** (muted): mono labels on section flaps, chart axes and footnotes.
-- **Table** (table): the surface the box stands on (page background outside the 1320px box).
+- **Table** (table): the page background behind the box. The box now fills the window, so it only shows during overscroll.
 
 ### Named Rules
 **The Spot Colour Rule.** Cord red goes only on actions, the current tab and the wordmark band. Never use red for decoration, headings, icons or emphasis in body copy. Its scarcity is what lets the band read as print.
@@ -204,9 +204,9 @@ A printed two-surface palette: dark carton and off-white paper, straw for type o
 
 ## Layout
 
-The box is a centred grid, at most 1320px wide: a 96px spine column, then the faces. At 860px and below, the spine becomes a horizontal sticky tab bar along the top and the box becomes one column.
+The box fills the window width: a 96px spine column, then the faces. At 860px and below, the spine becomes a horizontal sticky tab bar along the top and the box becomes one column.
 
-The box front fills at least one viewport. Its rows, top to bottom, are: top-edge strip, stage, band, foot. The pitch column stops where the art begins. The art is out of flow, about min(54vw, 720px) wide, bleeds 110px past the right edge and runs under the red band. On mobile the top-edge strip moves to the bottom of the box front, below the buttons, so it never reads as an eyebrow over the headline. The art drops into flow below the copy (at most 72% / 420px), never behind it.
+The box front fills at least one viewport. The Guardian art is min(54vw, max(720px, 75vh)), so it only grows past 720px on tall, wide screens; the headline caps at 88px. Its rows, top to bottom, are: top-edge strip, stage, band, foot. The pitch column stops where the art begins. The art is out of flow, that wide, bleeds 110px past the right edge and runs under the red band. On mobile the top-edge strip moves to the bottom of the box front, below the buttons, so it never reads as an eyebrow over the headline. The art drops into flow below the copy (at most 72% / 420px), never behind it.
 
 On the back panel, the page gutter is 56px on desktop and 16px on mobile. Sections are 96px apart on desktop, 72px on mobile. Each section opens with a flap (title left, mono fact right, a 4px ink rule under it, 40px below). Content uses asymmetric two-column grids (1.6:1, 1.3:1, 1:1.5) with 32–40px gaps, or ruled multi-cell rows (4 steps, 3 privacy columns). Those rows collapse to 2 and then 1 column at 860px and 520px. Cell padding is about 22–24px.
 
@@ -238,7 +238,7 @@ Heavy, square, packaging-label buttons: 800 weight, 17px, 0.02em tracking, paddi
 - **Focus:** a 3px outline offset 3px, in ink on paper and straw on carton.
 
 ### Spine navigation
-The box spine: sticky, full height, carton, with a 4px cord-red right edge. It holds the app icon, then vertical uppercase tabs reading bottom to top (800, 11–13px scaled by viewport height, 0.18em), then the vertical HAHAKIGAMI name (16–26px, scaled by viewport height; hidden on windows shorter than 720px, since the name is already on the band). The current tab is cord red with on-red text. One tab is always current, and the first viewport counts as Steps. On hover a tab fills straw with carton text. On mobile it becomes a horizontal tab bar with a 4px cord-red bottom edge; the icon and name are hidden.
+The box spine: sticky, full height, carton, with a 4px cord-red right edge. It holds the app icon (a back-to-top link, like the name), then vertical uppercase tabs reading bottom to top (800, 10–13px scaled by viewport height, 0.18em), then the vertical HAHAKIGAMI name (14–26px, scaled by viewport height; hidden on windows 760px tall or shorter, since the name is already on the band). The current tab is cord red with on-red text. One tab is always current, and the first viewport counts as Steps. On hover a tab fills straw with carton text. On mobile it becomes a horizontal tab bar with a 4px cord-red bottom edge; the icon and name are hidden.
 
 ### Section flap
 The heading strip that opens every back-panel section: a title on the left, a mono label on the right, both on one baseline, with a 4px ink rule underneath. The mono label states a fact about the section (a count, a date, a scope). It sits beside the title, never above it.

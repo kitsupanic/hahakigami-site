@@ -82,7 +82,9 @@
 </script>
 
 <aside class="spine carton">
-  <img class="mark" src="/favicon.png" alt="" width="56" height="56" />
+  <a class="mark" href="#top" onclick={(e) => go(e, 'top')} aria-label="Hahakigami, back to top"
+    ><img src="/favicon.png" alt="" width="56" height="56" /></a
+  >
   <nav aria-label="Sections" bind:this={nav}>
     {#each links as [id, label] (id)}
       <a href="#{id}" onclick={(e) => go(e, id)} aria-current={active === id ? 'true' : undefined}>{label}</a>
@@ -106,9 +108,21 @@
     border-right: 4px solid var(--cord);
   }
   .mark {
+    display: block;
+    border-radius: 12px;
+  }
+  .mark img {
+    display: block;
     width: clamp(40px, 6vh, 56px);
     height: auto;
-    border-radius: 12px;
+  }
+  .mark:hover img {
+    transform: rotate(-8deg);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .mark img {
+      transition: transform 250ms cubic-bezier(0.16, 1, 0.3, 1);
+    }
   }
   /* Vertical text, rotated so it reads bottom-to-top; the row direction then stacks items along the spine. */
   nav {
